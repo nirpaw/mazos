@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mazos", "mazos\mazos.vcxproj", "{85BA588C-A6C3-4F2A-A146-9FB0F249110D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{85BA588C-A6C3-4F2A-A146-9FB0F249110D}.Debug|x64.ActiveCfg = Debug|x64
+		{85BA588C-A6C3-4F2A-A146-9FB0F249110D}.Debug|x64.Build.0 = Debug|x64
+		{85BA588C-A6C3-4F2A-A146-9FB0F249110D}.Debug|x86.ActiveCfg = Debug|Win32
+		{85BA588C-A6C3-4F2A-A146-9FB0F249110D}.Debug|x86.Build.0 = Debug|Win32
+		{85BA588C-A6C3-4F2A-A146-9FB0F249110D}.Release|x64.ActiveCfg = Release|x64
+		{85BA588C-A6C3-4F2A-A146-9FB0F249110D}.Release|x64.Build.0 = Release|x64
+		{85BA588C-A6C3-4F2A-A146-9FB0F249110D}.Release|x86.ActiveCfg = Release|Win32
+		{85BA588C-A6C3-4F2A-A146-9FB0F249110D}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CC3A582B-AADE-4A0B-B5F0-5730C0CC8688}
+	EndGlobalSection
+EndGlobal
