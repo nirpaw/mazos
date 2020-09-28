@@ -1,12 +1,15 @@
 // mazos.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
 #include "pch.h"
 #include <iostream>
+#include "MazeBoard.h"
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	std::cout << "Hello World!\n"; 
+	MazeBoard aa;
+	aa.initBoard();
+	aa.printMaze();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
