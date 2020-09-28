@@ -2,6 +2,8 @@
 #include "MazeBoard.h"
 #include "Room.h"
 #include <iostream>
+#include <time.h>
+
 #define DRAW_C 10
 #define DRAW_R 6
 
@@ -12,10 +14,12 @@ MazeBoard::MazeBoard()
 
 void MazeBoard::initBoard()
 {
+	srand(time(NULL));
 	initMaze();
 	initTreasure();
 	initPlayers();
 }
+
 void MazeBoard::initMaze()
 {
 	for (int i = 0; i < ROW; i++) 
@@ -41,7 +45,6 @@ void MazeBoard::initMaze()
 			_maze[i][j] =  Room(i, j, currentTop, currentBottom, currentRight, currentLeft, currentRoomType);
 		}
 	}
-
 }
 
 void MazeBoard::initPlayers()
@@ -52,7 +55,7 @@ void MazeBoard::initPlayers()
 		 playersLocationI = rand() % ROW;
 		 playersLocationJ = rand() % COL;
 
-	}while (_maze[playersLocationI][playersLocationJ].isExternalDoorExist());
+	}while (!_maze[playersLocationI][playersLocationJ].isExternalDoorExist());
 
 	_playerOne.setPlayerLocation(playersLocationI, playersLocationJ);
 	_playerTwo.setPlayerLocation(playersLocationI, playersLocationJ);
@@ -79,7 +82,6 @@ void MazeBoard::printMaze()
 			{
 				cout << " ";
 			}
-
 			// print all row tops
 			if (r % DRAW_R == 0)
 			{
@@ -122,11 +124,23 @@ void MazeBoard::printMaze()
 					cout << " ";
 			}			
 			//print player 1
-			else if (c % DRAW_C == 1 && r % DRAW_R == 1)
+			else if (c % DRAW_C == 2 && r % DRAW_R == 1)
 			{
 				if (_playerOne.getI() == i && _playerOne.getJ() == j)
 				{
-					cout << "1";
+					cout << _playerOne.getName()[0];
+				}
+				else
+				{
+					cout << " ";
+				}
+			}			
+			//print player 2
+			else if (c % DRAW_C == 2 && r % DRAW_R == 2)
+			{
+				if (_playerTwo.getI() == i && _playerTwo.getJ() == j)
+				{
+					cout << _playerOne.getName()[0];
 				}
 				else
 				{
@@ -137,7 +151,6 @@ void MazeBoard::printMaze()
 			{
 					cout << " ";
 			}
-
 		}
 		cout << "\n";
 	}

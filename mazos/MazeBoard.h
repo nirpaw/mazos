@@ -15,7 +15,6 @@ public:
 	void initBoard();
 
 	void initMaze();
-	bool isExternalDoorInRoom(int i, int j);
 	void initPlayers();
 	void initTreasure();
 	void printMaze();

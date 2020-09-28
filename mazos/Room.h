@@ -29,10 +29,6 @@ public:
 
 	bool isExternalDoorExist();
 
-	
-
-
-	
 	void printRoom();
 
 };
