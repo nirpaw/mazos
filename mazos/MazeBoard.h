@@ -8,11 +8,17 @@ class MazeBoard
 {
 	Player _playerOne, _playerTwo;
 	Room _maze[ROW][COL];
+	bool _treasureIsReachble;
+
+	void _crawler(int i, int j);
+
 
 public:
 	MazeBoard();
 
 	void initBoard();
+
+	void checkIfTresureIsReachble();
 
 	void initMaze();
 	void initPlayers();

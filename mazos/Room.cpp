@@ -19,6 +19,7 @@ Room::Room(int i, int j, ePartition top, ePartition bottom, ePartition right, eP
 	_left = left;
 	_roomType = roomType;
 	_tresureValue = 0;
+	_checkVisited = false;
 }
 
 
@@ -98,8 +99,15 @@ int Room::getTresureValue()
 {
 	return _tresureValue;
 }
+bool Room::getCheckVisitd()
+{
+	return _checkVisited;
+}
+void Room::setCheckVisitd(bool visited)
+{
+	_checkVisited = visited;
 
-
+}
 void Room::setTresureValue(int value)
 {
 	 _tresureValue = value;

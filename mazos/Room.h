@@ -10,6 +10,7 @@ class Room
 	ePartition _top, _bottom, _right, _left;
 	eRoomType _roomType;
 	int _i, _j;
+	bool _checkVisited;
 
 public:
 
@@ -24,6 +25,11 @@ public:
 	eRoomType getRoomType();
 
 	int getTresureValue();
+
+	bool getCheckVisitd();
+
+	void setCheckVisitd(bool visited);
+
 
 	void setTresureValue(int value);
 

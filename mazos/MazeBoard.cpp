@@ -9,22 +9,61 @@
 
 MazeBoard::MazeBoard()
 {
-	
+	_treasureIsReachble = false;
 }
 
 void MazeBoard::initBoard()
 {
-	srand(time(NULL));
-	initMaze();
-	initTreasure();
-	initPlayers();
+	int c = 0;
+	while (!_treasureIsReachble)
+	{
+		cout << "try number:" << ++c<<"\n";
+		srand(time(NULL));
+		initMaze();
+		initTreasure();
+		initPlayers();
+		checkIfTresureIsReachble();
+	}
+
 }
 
+void MazeBoard::checkIfTresureIsReachble()
+{
+	_crawler(_playerOne.getI(), _playerOne.getJ());
+}
+
+void MazeBoard::_crawler(int i, int j)
+{
+	if (_maze[i][j].getTresureValue() != 0)
+	{
+		_treasureIsReachble = true;
+	}
+	else
+	{
+		_maze[i][j].setCheckVisitd(true);
+		//go  left
+		if (j - 1 >= 0 && _maze[i][j].getLeft() == door && !_maze[i][j - 1].getCheckVisitd())
+			_crawler(i, j - 1);
+		
+		//go up
+		if (i - 1 >= 0 && _maze[i][j].getTop() == door && !_maze[i - 1][j].getCheckVisitd())
+			_crawler(i - 1, j);
+		
+		//go right
+		if (j + 1 < COL && _maze[i][j].getRight() == door && !_maze[i][j + 1].getCheckVisitd())
+			_crawler(i, j + 1);
+		
+		//go  down
+		if (i + 1 < ROW && _maze[i][j].getBottom() == door && !_maze[i + 1][j].getCheckVisitd())
+			_crawler(i + 1, j);
+		
+	}
+}
 void MazeBoard::initMaze()
 {
-	for (int i = 0; i < ROW; i++) 
+	for (int i = 0; i < ROW; i++)
 	{
-		for (int j = 0; j < COL; j++) 
+		for (int j = 0; j < COL; j++)
 		{
 			ePartition currentLeft, currentTop, currentRight, currentBottom;
 
@@ -32,36 +71,38 @@ void MazeBoard::initMaze()
 			currentLeft = j - 1 < 0 ? static_cast<ePartition>(rand() % 2) : _maze[i][j - 1].getRight();
 
 			// if top room is out of bounds generate random partition, else take the existing from top
-			currentTop = i - 1 < 0 ? static_cast<ePartition>(rand() % 2) : _maze[i -1 ][j].getBottom();
+			currentTop = i - 1 < 0 ? static_cast<ePartition>(rand() % 2) : _maze[i - 1][j].getBottom();
 
 			//generate random patition for the right and botton part
-			 currentRight = static_cast<ePartition>(rand() % 2);
-			 currentBottom = static_cast<ePartition>(rand() % 2);
+			currentRight = static_cast<ePartition>(rand() % 2);
+			currentBottom = static_cast<ePartition>(rand() % 2);
 
-			 //check if its internal or external room
-			 eRoomType currentRoomType = (i - 1 >= 0 && j - 1 >= 0 && j + 1 < ROW && i + 1 < COL) ? internalRoom : exteranlRoom;
+			//check if its internal or external room
+			eRoomType currentRoomType = (i - 1 >= 0 && j - 1 >= 0 && j + 1 < ROW && i + 1 < COL) ? internalRoom : exteranlRoom;
 
 			//cout << currentRoomType;
-			_maze[i][j] =  Room(i, j, currentTop, currentBottom, currentRight, currentLeft, currentRoomType);
+			_maze[i][j] = Room(i, j, currentTop, currentBottom, currentRight, currentLeft, currentRoomType);
 		}
 	}
 }
 
 void MazeBoard::initPlayers()
-{ 
+{
 	int playersLocationI, playersLocationJ;
 	do
 	{
-		 playersLocationI = rand() % ROW;
-		 playersLocationJ = rand() % COL;
+		playersLocationI = rand() % ROW;
+		playersLocationJ = rand() % COL;		
+		//cout << "getTresureValue(): " << _maze[playersLocationI][playersLocationJ].getTresureValue() << "\n";
 
-	}while (!_maze[playersLocationI][playersLocationJ].isExternalDoorExist());
+
+	} while (!_maze[playersLocationI][playersLocationJ].isExternalDoorExist() && (_maze[playersLocationI][playersLocationJ].getTresureValue() != 0));
 
 	_playerOne.setPlayerLocation(playersLocationI, playersLocationJ);
 	_playerTwo.setPlayerLocation(playersLocationI, playersLocationJ);
 
 }
-void MazeBoard::initTreasure() 
+void MazeBoard::initTreasure()
 {
 	_maze[rand() % ROW][rand() % COL].setTresureValue(rand() % 10);
 }
@@ -117,12 +158,12 @@ void MazeBoard::printMaze()
 			//print treasure
 			else if (c % DRAW_C == DRAW_C / 2 && r % DRAW_R == DRAW_R / 2)
 			{
-				int treasure= _maze[i][j].getTresureValue();
+				int treasure = _maze[i][j].getTresureValue();
 				if (treasure != 0)
 					cout << treasure;
 				else
 					cout << " ";
-			}			
+			}
 			//print player 1
 			else if (c % DRAW_C == 2 && r % DRAW_R == 1)
 			{
@@ -134,7 +175,7 @@ void MazeBoard::printMaze()
 				{
 					cout << " ";
 				}
-			}			
+			}
 			//print player 2
 			else if (c % DRAW_C == 2 && r % DRAW_R == 2)
 			{
@@ -147,9 +188,9 @@ void MazeBoard::printMaze()
 					cout << " ";
 				}
 			}
-			else  
+			else
 			{
-					cout << " ";
+				cout << " ";
 			}
 		}
 		cout << "\n";
