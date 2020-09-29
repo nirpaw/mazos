@@ -8,7 +8,7 @@ int main()
 {
 	std::cout << "Hello World!\n"; 
 	MazeBoard aa;
-	aa.initBoard();
+	aa.initNewBoard();
 	aa.printMaze();
 }
 

@@ -4,27 +4,25 @@
 #include <iostream>
 #include <time.h>
 
-#define DRAW_C 10
-#define DRAW_R 6
+
 
 MazeBoard::MazeBoard()
 {
-	_treasureIsReachble = false;
 }
 
-void MazeBoard::initBoard()
+void MazeBoard::initNewBoard()
 {
-	int c = 0;
-	while (!_treasureIsReachble)
+	_treasureIsReachable = false;
+	cout << "Wait...\n";
+	while (!_treasureIsReachable)
 	{
-		cout << "try number:" << ++c<<"\n";
 		srand(time(NULL));
+
 		initMaze();
 		initTreasure();
 		initPlayers();
 		checkIfTresureIsReachble();
 	}
-
 }
 
 void MazeBoard::checkIfTresureIsReachble()
@@ -36,7 +34,7 @@ void MazeBoard::_crawler(int i, int j)
 {
 	if (_maze[i][j].getTresureValue() != 0)
 	{
-		_treasureIsReachble = true;
+		_treasureIsReachable = true;
 	}
 	else
 	{
@@ -44,23 +42,23 @@ void MazeBoard::_crawler(int i, int j)
 		//go  left
 		if (j - 1 >= 0 && _maze[i][j].getLeft() == door && !_maze[i][j - 1].getCheckVisitd())
 			_crawler(i, j - 1);
-		
+
 		//go up
 		if (i - 1 >= 0 && _maze[i][j].getTop() == door && !_maze[i - 1][j].getCheckVisitd())
 			_crawler(i - 1, j);
-		
+
 		//go right
 		if (j + 1 < COL && _maze[i][j].getRight() == door && !_maze[i][j + 1].getCheckVisitd())
 			_crawler(i, j + 1);
-		
+
 		//go  down
 		if (i + 1 < ROW && _maze[i][j].getBottom() == door && !_maze[i + 1][j].getCheckVisitd())
 			_crawler(i + 1, j);
-		
 	}
 }
 void MazeBoard::initMaze()
 {
+	int externalRoomsCounter = 0;
 	for (int i = 0; i < ROW; i++)
 	{
 		for (int j = 0; j < COL; j++)
@@ -82,6 +80,7 @@ void MazeBoard::initMaze()
 
 			//cout << currentRoomType;
 			_maze[i][j] = Room(i, j, currentTop, currentBottom, currentRight, currentLeft, currentRoomType);
+
 		}
 	}
 }
@@ -91,12 +90,21 @@ void MazeBoard::initPlayers()
 	int playersLocationI, playersLocationJ;
 	do
 	{
-		playersLocationI = rand() % ROW;
-		playersLocationJ = rand() % COL;		
-		//cout << "getTresureValue(): " << _maze[playersLocationI][playersLocationJ].getTresureValue() << "\n";
+		int rndRowOrCol = rand() % 2;
+		if (rndRowOrCol == 0)
+		{
 
-
-	} while (!_maze[playersLocationI][playersLocationJ].isExternalDoorExist() && (_maze[playersLocationI][playersLocationJ].getTresureValue() != 0));
+			playersLocationI = rand() % ROW;
+			playersLocationJ = 0;
+		}
+		else
+		{
+			playersLocationJ = rand() % COL;
+			playersLocationI = 0;
+		}
+	} while ((_maze[playersLocationI][playersLocationJ].getRoomType() != exteranlRoom) ||
+		(!_maze[playersLocationI][playersLocationJ].isExternalDoorExist()) ||
+		(_maze[playersLocationI][playersLocationJ].getTresureValue() != 0));
 
 	_playerOne.setPlayerLocation(playersLocationI, playersLocationJ);
 	_playerTwo.setPlayerLocation(playersLocationI, playersLocationJ);
@@ -127,7 +135,7 @@ void MazeBoard::printMaze()
 			if (r % DRAW_R == 0)
 			{
 				if (_maze[i][j].getTop() == wall)
-					cout << "=";
+					cout << "#";
 				else
 					cout << "-";
 			}
@@ -135,7 +143,7 @@ void MazeBoard::printMaze()
 			else if (r % DRAW_R == DRAW_R - 1)
 			{
 				if (_maze[i][j].getBottom() == wall)
-					cout << "=";
+					cout << "#";
 				else
 					cout << "-";
 			}
@@ -143,17 +151,17 @@ void MazeBoard::printMaze()
 			else if (c % DRAW_C == 0)
 			{
 				if (_maze[i][j].getLeft() == wall)
-					cout << "=";
+					cout << "#";
 				else
-					cout << "-";
+					cout << "|";
 			}
 			//print all row rights
 			else if (c % DRAW_C == DRAW_C - 1)
 			{
 				if (_maze[i][j].getRight() == wall)
-					cout << "=";
+					cout << "#";
 				else
-					cout << "-";
+					cout << "|";
 			}
 			//print treasure
 			else if (c % DRAW_C == DRAW_C / 2 && r % DRAW_R == DRAW_R / 2)

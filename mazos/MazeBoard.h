@@ -1,22 +1,24 @@
 #include "Room.h"
 #include "Player.h"
-#define ROW 4
-#define COL 4
+#define ROW 8	
+#define COL 8
+#define DRAW_C 10
+#define DRAW_R 6
 #pragma once
 
 class MazeBoard
 {
 	Player _playerOne, _playerTwo;
 	Room _maze[ROW][COL];
-	bool _treasureIsReachble;
-
+	Room *_externalRooms;
+	bool _treasureIsReachable;
 	void _crawler(int i, int j);
 
 
 public:
 	MazeBoard();
 
-	void initBoard();
+	void initNewBoard();
 
 	void checkIfTresureIsReachble();
 

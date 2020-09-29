@@ -14,7 +14,6 @@ Player::Player() : _score(0), _stepsCounter(0), _i(0) , _j(0) {
 //}
 
 
-
 void Player::setName(string name)
 {
 	_name = name;
