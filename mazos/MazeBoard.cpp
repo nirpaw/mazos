@@ -24,7 +24,7 @@ void MazeBoard::initNewBoard()
 		checkIfTresureIsReachble();
 	}
 }
-
+ 
 void MazeBoard::checkIfTresureIsReachble()
 {
 	_crawler(_playerOne.getI(), _playerOne.getJ());
@@ -90,6 +90,8 @@ void MazeBoard::initPlayers()
 	int playersLocationI, playersLocationJ;
 	do
 	{
+		// choose the first location of both players,
+		// reapet till the choosen rooom is: extermal || external door is exist || witout tresure 
 		int rndRowOrCol = rand() % 2;
 		if (rndRowOrCol == 0)
 		{
