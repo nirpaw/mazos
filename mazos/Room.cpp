@@ -26,51 +26,46 @@ Room::Room(int i, int j, ePartition top, ePartition bottom, ePartition right, eP
 Room::~Room()
 {
 }
- 
+
 
 void::Room::printRoom()
 {
+	for (int i = 0; i < LENGTH_DRAW_C; i++)
+	{
 		if (_top == wall)
-		{
-			std::cout << "============\n";
-		}
+			cout << WALL_SIGN_VERTICAL;
 		else
+			cout << DOOR_SIGN_VERTICAL;
+	}
+	for (int i = 0; i < LENGTH_DRAW_R; i++)
+	{
+		for (int j = 0; j < LENGTH_DRAW_C; i++)
 		{
-			std::cout << "------------\n";
+			if (j == 0)
+			{
+				if (_left == wall)
+					cout << WALL_SIGN_HORIZONTAL;
+				else
+					cout << DOOR_SIGN_HORIZONTAL;
+			}
+			if (j == LENGTH_DRAW_C - 1)
+			{
+				if (_right == wall)
+					cout << WALL_SIGN_HORIZONTAL;
+				else
+					cout << DOOR_SIGN_HORIZONTAL;
+			}
 		}
-		for (int i = 0; i < 7; i++)
-		{
-			if (_left == wall)
-			{
-				std::cout << "||";
-			}
-			else
-			{
-				std::cout << "|";
-			}
-			std::cout << "   R"<< _i<< _j<< "    ";
-			if (_right == wall)
-			{
-				std::cout << "||";
-			}
-			else
-			{
-				std::cout << "|";
-			}
-			std::cout << "\n";
-		}
+	}
 
+	for (int i = 0; i < LENGTH_DRAW_C; i++)
+	{
 		if (_bottom == wall)
-		{
-			std::cout << "============";
-		}
+			cout << WALL_SIGN_VERTICAL;
 		else
-		{
-			std::cout << "------------";
-		}
-		std::cout << "\n";
-
-	
+			cout << DOOR_SIGN_VERTICAL;
+	}
+	cout << "\n";
 }
 
 ePartition Room::getTop()
@@ -110,12 +105,12 @@ void Room::setCheckVisitd(bool visited)
 }
 void Room::setTresureValue(int value)
 {
-	 _tresureValue = value;
+	_tresureValue = value;
 }
 
 bool Room::isExternalDoorExist()
 {
-	if (_bottom == door && _i == ROW - 1 )
+	if (_bottom == door && _i == ROW - 1)
 	{
 		return true;
 	}

@@ -29,10 +29,19 @@ public:
 
 	void addStep(int playerNun);
 
+	void printGameSummary(int winner);
+
+	void gameOver(int winner, int tresureValue);
+
 	void gameManager();
 
 	void playTurn(int playerTurn);
 
+	void printAjoiningRoom(int playerTurn);
+
+
+
+	void printAirDist(int playerTurn);
 
 	void startNewGame();
 

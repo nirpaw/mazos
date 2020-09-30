@@ -12,6 +12,7 @@ class Room
 	int _i, _j;
 	bool _checkVisited;
 
+
 public:
 
 	Room();

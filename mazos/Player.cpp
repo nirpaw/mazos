@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Player.h"
 
-Player::Player() : _score(0), _stepsCounter(0), _i(0) , _j(0) {
+Player::Player() : _score(0), _i(0) , _j(0) {
 	this->setName("Player");
 }
 

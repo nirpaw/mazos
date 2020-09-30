@@ -43,6 +43,7 @@ class MazeBoard
 	Room _maze[ROW][COL];
 	bool _treasureIsReachable;
 	void _crawler(int i, int j);
+	int _trI, _trJ;
 
 
 public:
@@ -50,13 +51,19 @@ public:
 
 	void initNewBoard();
 
+	bool checkIfPlayerFoundTresure(int playerNum);
+
+	bool isPlayerFoundTresure(int playerNum);
+
 	void checkIfTresureIsReachble();
 
 	void setMazeRooms();
 	void serPlayersLocation();
+	float checkAirDistance(int playerNum);
 	void initTreasure();
 	void printMaze();
 	void setPlayersName(string n1, string n2);
+	int getTresureValue(int playerNum);
 	void movePlayer(int playerNum, eMoveDirection direction);
 
 	void addScoreAfterGame(int playerNum, int scoreToAdd);

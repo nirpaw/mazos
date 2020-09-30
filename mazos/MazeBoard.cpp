@@ -23,6 +23,8 @@ void MazeBoard::initNewBoard()
 	}
 }
 
+
+
 void MazeBoard::checkIfTresureIsReachble()
 {
 	_crawler(_playerOne.getI(), _playerOne.getJ());
@@ -108,9 +110,24 @@ void MazeBoard::serPlayersLocation()
 	_playerOne.setPlayerLocation(playersLocationI, playersLocationJ);
 	_playerTwo.setPlayerLocation(playersLocationI, playersLocationJ);
 }
+float MazeBoard::checkAirDistance(int playerNum)
+{
+	Player temp = playerNum == 0 ? _playerOne : _playerTwo;
+	// Calculating distance 
+	int x1 = _playerOne.getI();
+	int x2 = _playerOne.getJ();
+	int y1 = _trI;
+	int y2 = _trJ;
+
+	return sqrt(pow(x2 - x1, 2) +
+		pow(y2 - y1, 2) * 1.0);
+}
+
 void MazeBoard::initTreasure()
 {
-	_maze[rand() % ROW][rand() % COL].setTresureValue(rand() % 10);
+	_trI = rand() % ROW;
+	_trJ = rand() % COL;
+	_maze[_trI][_trJ].setTresureValue(rand() % 10);
 }
 
 void MazeBoard::printMaze()
@@ -204,12 +221,23 @@ void MazeBoard::printMaze()
 
 }
 
-
 void MazeBoard::setPlayersName(string n1, string n2)
 {
 	_playerOne.setName(n1);
 	_playerTwo.setName(n2);
 
+}
+
+int MazeBoard::getTresureValue(int playerNum)
+{
+	Player temp = playerNum == 0 ? _playerOne : _playerTwo;
+
+	if (temp.getI() < 0 || temp.getI() >= ROW ||
+		temp.getJ() < 0 || temp.getJ() >= ROW)
+	{
+		throw OutOfBoundsException("Out of bounds");
+	}
+	return _maze[temp.getI()][temp.getJ()].getTresureValue();
 }
 
 void MazeBoard::movePlayer(int playerNum, eMoveDirection direction)

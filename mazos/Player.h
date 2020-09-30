@@ -6,7 +6,6 @@ class Player
 {
 	string _name;
 	int _score;
-	int _stepsCounter;
 	int _i;
 	int _j;
 
@@ -15,7 +14,6 @@ public:
 	Player();
 	//Player(string name, int x = 0, int y = 0, int score = 0);
 	void setPlayerLocation(int x, int y);
-	bool isOutOfBoard();
 	~Player();
 
 	//getters and setters

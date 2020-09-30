@@ -6,10 +6,6 @@
 
 int main()
 {
-	std::cout << "Hello World!\n"; 
-	//MazeBoard aa;
-	//aa.initNewBoard();
-	//aa.printMaze();
 	SessionManager s;
 	s.userInputGameSettings();
 	s.startNewGame();
