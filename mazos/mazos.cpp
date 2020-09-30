@@ -2,14 +2,17 @@
 //
 #include "pch.h"
 #include <iostream>
-#include "MazeBoard.h"
+#include "SessionManager.h"
 
 int main()
 {
 	std::cout << "Hello World!\n"; 
-	MazeBoard aa;
-	aa.initNewBoard();
-	aa.printMaze();
+	//MazeBoard aa;
+	//aa.initNewBoard();
+	//aa.printMaze();
+	SessionManager s;
+	s.userInputGameSettings();
+	s.startNewGame();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

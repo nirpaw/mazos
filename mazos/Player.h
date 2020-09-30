@@ -15,6 +15,7 @@ public:
 	Player();
 	//Player(string name, int x = 0, int y = 0, int score = 0);
 	void setPlayerLocation(int x, int y);
+	bool isOutOfBoard();
 	~Player();
 
 	//getters and setters
@@ -22,6 +23,7 @@ public:
 	void setName(string);
 	int getScore() { return _score; }
 	void setScore(int);
+	void addScore(int scoreToAdd);
 	int getI() { return _i; }
 	void setI(int);
 	int getJ() { return _j; }

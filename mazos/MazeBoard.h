@@ -1,16 +1,46 @@
 #include "Room.h"
 #include "Player.h"
-#define ROW 8	
-#define COL 8
-#define DRAW_C 10
-#define DRAW_R 6
+#define ROW 4	
+#define COL 4
+#define LENGTH_DRAW_C 10
+#define LENGTH_DRAW_R 6
+#define WALL_SIGN_HORIZONTAL '#'
+#define DOOR_SIGN_HORIZONTAL '-'
+#define WALL_SIGN_VERTICAL '#'
+#define DOOR_SIGN_VERTICAL '|'
+#define SPACE_CHAR ' '
 #pragma once
+
+enum eMoveDirection
+{
+	moveLeft,
+	moveRight,
+	moveUp,
+	moveDown
+};
+
+
+struct OutOfBoundsException : public exception
+{
+	string s;
+	OutOfBoundsException(string ss) : s(ss) {}
+	~OutOfBoundsException() throw () {} // Updated
+	const char* text() const throw() { return s.c_str(); }
+};
+
+
+struct CrossingBlockedException : public exception
+{
+	string s;
+	CrossingBlockedException(string ss) : s(ss) {}
+	~CrossingBlockedException() throw () {} // Updated
+	const char* text() const throw() { return s.c_str(); }
+};
 
 class MazeBoard
 {
 	Player _playerOne, _playerTwo;
 	Room _maze[ROW][COL];
-	Room *_externalRooms;
 	bool _treasureIsReachable;
 	void _crawler(int i, int j);
 
@@ -22,10 +52,19 @@ public:
 
 	void checkIfTresureIsReachble();
 
-	void initMaze();
-	void initPlayers();
+	void setMazeRooms();
+	void serPlayersLocation();
 	void initTreasure();
 	void printMaze();
+	void setPlayersName(string n1, string n2);
+	void movePlayer(int playerNum, eMoveDirection direction);
+
+	void addScoreAfterGame(int playerNum, int scoreToAdd);
+
+	Player getPlayerOne();
+
+	Player getPlayerTwo();
+
 	~MazeBoard();
 };
 

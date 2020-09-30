@@ -5,7 +5,6 @@
 #include <time.h>
 
 
-
 MazeBoard::MazeBoard()
 {
 }
@@ -13,18 +12,17 @@ MazeBoard::MazeBoard()
 void MazeBoard::initNewBoard()
 {
 	_treasureIsReachable = false;
-	cout << "Wait...\n";
 	while (!_treasureIsReachable)
 	{
 		srand(time(NULL));
 
-		initMaze();
+		setMazeRooms();
 		initTreasure();
-		initPlayers();
+		serPlayersLocation();
 		checkIfTresureIsReachble();
 	}
 }
- 
+
 void MazeBoard::checkIfTresureIsReachble()
 {
 	_crawler(_playerOne.getI(), _playerOne.getJ());
@@ -56,7 +54,7 @@ void MazeBoard::_crawler(int i, int j)
 			_crawler(i + 1, j);
 	}
 }
-void MazeBoard::initMaze()
+void MazeBoard::setMazeRooms()
 {
 	int externalRoomsCounter = 0;
 	for (int i = 0; i < ROW; i++)
@@ -71,21 +69,21 @@ void MazeBoard::initMaze()
 			// if top room is out of bounds generate random partition, else take the existing from top
 			currentTop = i - 1 < 0 ? static_cast<ePartition>(rand() % 2) : _maze[i - 1][j].getBottom();
 
-			//generate random patition for the right and botton part
+			// generate random patition for the right and botton part
 			currentRight = static_cast<ePartition>(rand() % 2);
 			currentBottom = static_cast<ePartition>(rand() % 2);
 
-			//check if its internal or external room
+			// check if its internal or external room
 			eRoomType currentRoomType = (i - 1 >= 0 && j - 1 >= 0 && j + 1 < ROW && i + 1 < COL) ? internalRoom : exteranlRoom;
 
-			//cout << currentRoomType;
+			// cout << currentRoomType;
 			_maze[i][j] = Room(i, j, currentTop, currentBottom, currentRight, currentLeft, currentRoomType);
 
 		}
 	}
 }
 
-void MazeBoard::initPlayers()
+void MazeBoard::serPlayersLocation()
 {
 	int playersLocationI, playersLocationJ;
 	do
@@ -95,7 +93,6 @@ void MazeBoard::initPlayers()
 		int rndRowOrCol = rand() % 2;
 		if (rndRowOrCol == 0)
 		{
-
 			playersLocationI = rand() % ROW;
 			playersLocationJ = 0;
 		}
@@ -110,7 +107,6 @@ void MazeBoard::initPlayers()
 
 	_playerOne.setPlayerLocation(playersLocationI, playersLocationJ);
 	_playerTwo.setPlayerLocation(playersLocationI, playersLocationJ);
-
 }
 void MazeBoard::initTreasure()
 {
@@ -123,88 +119,169 @@ void MazeBoard::printMaze()
 	// DRAW_C is the numeber of chars that representing left & right parititions
 
 	int i, j;
-	for (int r = 0; r < DRAW_R * ROW; r++)
+	for (int r = 0; r < LENGTH_DRAW_R * ROW; r++)
 	{
-		for (int c = 0; c < DRAW_C * COL; c++)
+		for (int c = 0; c < LENGTH_DRAW_C * COL; c++)
 		{
-			i = r / DRAW_R;
-			j = c / DRAW_C;
-			if (c % DRAW_C == 0)
+			i = r / LENGTH_DRAW_R;
+			j = c / LENGTH_DRAW_C;
+			if (c % LENGTH_DRAW_C == 0)
 			{
 				cout << " ";
 			}
 			// print all row tops
-			if (r % DRAW_R == 0)
+			if (r % LENGTH_DRAW_R == 0)
 			{
 				if (_maze[i][j].getTop() == wall)
-					cout << "#";
+					cout << WALL_SIGN_HORIZONTAL;
 				else
-					cout << "-";
+					cout << DOOR_SIGN_HORIZONTAL;
 			}
 			//print all row bottoms 
-			else if (r % DRAW_R == DRAW_R - 1)
+			else if (r % LENGTH_DRAW_R == LENGTH_DRAW_R - 1)
 			{
 				if (_maze[i][j].getBottom() == wall)
-					cout << "#";
+					cout << WALL_SIGN_HORIZONTAL;
 				else
-					cout << "-";
+					cout << DOOR_SIGN_HORIZONTAL;
 			}
 			//print all row lefts
-			else if (c % DRAW_C == 0)
+			else if (c % LENGTH_DRAW_C == 0)
 			{
 				if (_maze[i][j].getLeft() == wall)
-					cout << "#";
+					cout << WALL_SIGN_VERTICAL;
 				else
-					cout << "|";
+					cout << DOOR_SIGN_VERTICAL;
 			}
 			//print all row rights
-			else if (c % DRAW_C == DRAW_C - 1)
+			else if (c % LENGTH_DRAW_C == LENGTH_DRAW_C - 1)
 			{
 				if (_maze[i][j].getRight() == wall)
-					cout << "#";
+					cout << WALL_SIGN_VERTICAL;
 				else
-					cout << "|";
+					cout << DOOR_SIGN_VERTICAL;
 			}
 			//print treasure
-			else if (c % DRAW_C == DRAW_C / 2 && r % DRAW_R == DRAW_R / 2)
+			else if (c % LENGTH_DRAW_C == LENGTH_DRAW_C / 2 && r % LENGTH_DRAW_R == LENGTH_DRAW_R / 2)
 			{
 				int treasure = _maze[i][j].getTresureValue();
 				if (treasure != 0)
 					cout << treasure;
 				else
-					cout << " ";
+					cout << SPACE_CHAR;
 			}
 			//print player 1
-			else if (c % DRAW_C == 2 && r % DRAW_R == 1)
+			else if (c % LENGTH_DRAW_C == 2 && r % LENGTH_DRAW_R == 1)
 			{
 				if (_playerOne.getI() == i && _playerOne.getJ() == j)
 				{
-					cout << _playerOne.getName()[0];
+					cout << _playerOne.getName()[0]; //first letter
 				}
 				else
 				{
-					cout << " ";
+					cout << SPACE_CHAR;
 				}
 			}
 			//print player 2
-			else if (c % DRAW_C == 2 && r % DRAW_R == 2)
+			else if (c % LENGTH_DRAW_C == 2 && r % LENGTH_DRAW_R == 2)
 			{
 				if (_playerTwo.getI() == i && _playerTwo.getJ() == j)
 				{
-					cout << _playerOne.getName()[0];
+					cout << _playerTwo.getName()[0]; //first letter
 				}
 				else
 				{
-					cout << " ";
+					cout << SPACE_CHAR;
 				}
 			}
 			else
 			{
-				cout << " ";
+				cout << SPACE_CHAR;
 			}
 		}
 		cout << "\n";
 	}
+
+}
+
+
+void MazeBoard::setPlayersName(string n1, string n2)
+{
+	_playerOne.setName(n1);
+	_playerTwo.setName(n2);
+
+}
+
+void MazeBoard::movePlayer(int playerNum, eMoveDirection direction)
+{
+
+
+	Player temp = playerNum == 0 ? _playerOne : _playerTwo;
+
+	if (temp.getI() < 0 || temp.getI() >= ROW ||
+		temp.getJ() < 0 || temp.getJ() >= ROW)
+	{
+		throw OutOfBoundsException("Out of bounds");
+	}
+
+	switch (direction)
+	{
+	case moveLeft:
+		if ((_maze[temp.getI()][temp.getJ()]).getLeft() == wall)
+			throw CrossingBlockedException("The crossing is blocked, an impossible step");
+		temp.setPlayerLocation(temp.getI(), temp.getJ() - 1);
+		break;
+	case moveRight:
+		if ((_maze[temp.getI()][temp.getJ()]).getRight() == wall)
+			throw CrossingBlockedException("The crossing is blocked, an impossible step");
+		temp.setPlayerLocation(temp.getI(), temp.getJ() + 1);
+		break;
+	case moveUp:
+		if ((_maze[temp.getI()][temp.getJ()]).getTop() == wall)
+			throw CrossingBlockedException("The crossing is blocked, an impossible step");
+		temp.setPlayerLocation(temp.getI() - 1, temp.getJ());
+
+		break;
+	case moveDown:
+		if ((_maze[temp.getI()][temp.getJ()]).getBottom() == wall)
+			throw CrossingBlockedException("The crossing is blocked, an impossible step");
+		temp.setPlayerLocation(temp.getI() + 1, temp.getJ());
+		break;
+	default:
+		break;
+	}
+
+
+	if (playerNum == 0) {
+		_playerOne = temp;
+	}
+	else {
+		_playerTwo = temp;
+	}
+}
+
+
+void MazeBoard::addScoreAfterGame(int playerNum, int scoreToAdd)
+{
+	if (playerNum == 0)
+	{
+		_playerOne.addScore(scoreToAdd);
+	}
+	else
+	{
+		_playerTwo.addScore(scoreToAdd);
+
+	}
+}
+
+
+Player MazeBoard::getPlayerOne()
+{
+	return _playerOne;
+}
+Player MazeBoard::getPlayerTwo()
+{
+	return _playerTwo;
 
 }
 
