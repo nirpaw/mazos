@@ -167,15 +167,15 @@ void SessionManager::playTurn(int playerTurn)
 			default:
 				if (_gameType == userVsRobot && playerTurn == 0)
 				{
-					cout << "\n~| Wrong input. Try again|~\n";
+					cout << "--------------------> ~| Wrong input. Try again|~\n";
 				}
 				choiseIsOK = false;
 				continue;
 				break;
 			}
-		
 
-			cout << "\n-> " << playerName << " " << optionsMap(toupper(moveChoice));
+			if (!(_gameType == userVsRobot && playerTurn == 0)	)
+				cout << "\n-> " << playerName << " " << optionsMap(toupper(moveChoice));
 			cout << "\n";
 			moveIsOk = true;
 			if(isStep)
@@ -202,7 +202,7 @@ void SessionManager::printAjoiningRoom(int playerTurn)
 	int i = playerTurn == 0 ? _mazeBoard.getPlayerOne().getI() : _mazeBoard.getPlayerTwo().getI();
 	int j = playerTurn == 0 ? _mazeBoard.getPlayerOne().getJ() : _mazeBoard.getPlayerTwo().getJ();
 
-	bool choiseIsOK = true;
+	bool choiseIsOK = false;
 	char roomChoice;
 
 	while (!choiseIsOK)
@@ -232,7 +232,7 @@ void SessionManager::printAjoiningRoom(int playerTurn)
 				break;
 
 			default:
-				cout << "~| Wrong input. Try again |~\n";
+				cout << "--------------------> ~| Wrong input. Try again|~\n";
 				choiseIsOK = false;
 				continue;
 				break;
@@ -290,7 +290,7 @@ void SessionManager::userInputGameSettings()
 			choiseIsOk = true;
 			break;
 		default:
-			cout << "~| Wrong input. Try again|~\n";
+			cout << "--------------------> ~| Wrong input. Try again|~\n";
 			continue;
 			break;
 		}
@@ -315,7 +315,7 @@ void SessionManager::userInputGameSettings()
 			choiseIsOk = true;
 			break;
 		default:
-			cout << "~| Wrong input. Try again|~\n";
+			cout << "--------------------> ~| Wrong input. Try again|~\n";
 			continue;
 			break;
 		}
