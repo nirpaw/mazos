@@ -10,8 +10,6 @@
 SessionManager::SessionManager()
 {
 	srand(time(NULL));
-
-
 }
 
 
@@ -82,10 +80,6 @@ void SessionManager::gameManager()
 		{
 			_mazeBoard.printMaze();
 		}
-		//cout << "----\nfor debug\n" ;
-
-		//cout << "p1 steps :" << _playerOneStepsCounter;
-		//cout << "\np2 steps :" << _playerTwoStepsCounter;		cout << "\n----";
 
 		try {
 			treasureValue = _mazeBoard.getTresureValue(playerTurn);
@@ -188,9 +182,8 @@ void SessionManager::playTurn(int playerTurn)
 				addStep(playerTurn);
 		}
 		catch (CrossingBlockedException& e) {
-			cout << playerName << " tried to pass through a wall. Try Again.\n";
-			system("pause");
-
+			
+			cout <<"------------------------------\n--> " << playerName << " tried to pass through a wall. Try Again.\n";
 			continue;
 		}
 		

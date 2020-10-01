@@ -7,6 +7,7 @@
 
 Room::Room()
 {
+	cout << ":Room() ct`r";
 }
 
 Room::Room(int i, int j, ePartition top, ePartition bottom, ePartition right, ePartition left, eRoomType roomType)

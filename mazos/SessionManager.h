@@ -27,7 +27,9 @@ class SessionManager
 	int _playerTwoStepsPicks;
 
 	MazeBoard _mazeBoard;
+
 	ePrintingMethod _printingMethode;
+
 	eGameType _gameType;
 
 public:

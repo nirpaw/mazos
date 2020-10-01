@@ -52,10 +52,6 @@ public:
 
 	void initNewBoard();
 
-	bool checkIfPlayerFoundTresure(int playerNum);
-
-	bool isPlayerFoundTresure(int playerNum);
-
 	void checkIfTresureIsReachble();
 
 	void setMazeRooms();
