@@ -7,15 +7,16 @@
 #include <map>
 
 
+
 SessionManager::SessionManager()
 {
+	_roundsCounter = 0;
 	srand(time(NULL));
 }
 
 
 SessionManager::~SessionManager()
 {
-
 }
 
 void SessionManager::initSession()
@@ -40,11 +41,10 @@ void SessionManager::printGameSummary(int winner)
 	cout << " " << _mazeBoard.getPlayerOne().getName()<<" with " << _mazeBoard.getPlayerOne().getScore()<< " Points\n";
 	cout << " " << _mazeBoard.getPlayerTwo().getName()<<" with " << _mazeBoard.getPlayerTwo().getScore()<< " Points\n";
 	cout << "-----------------------------\n";
-	cout << "-->Tap any key to start new game\n";
 	system("pause");
 }
 
-void SessionManager::gameOver(int winner, int tresureValue)
+void SessionManager::roundOver(int winner, int tresureValue)
 {
 	if (winner == 0)
 	{
@@ -58,17 +58,22 @@ void SessionManager::gameOver(int winner, int tresureValue)
 	}
 
 	printGameSummary(winner);
-	startNewGame();
-
+	if (_roundsCounter == 3)
+	{
+		cout << "/n-GameOver-";
+	}
+	else {
+		startNewGame();
+	}
 }
 
 void SessionManager::gameManager()
 {
 
 	int playerTurn = rand() % 2;
-	bool gameIsOver = false;
+	bool roundIsOver = false;
 	int treasureValue = 0;
-	while (!gameIsOver)
+	while (!roundIsOver)
 	{
 		system("pause");
 
@@ -89,13 +94,13 @@ void SessionManager::gameManager()
 			treasureValue = 0;
 		}
 
-		gameIsOver = treasureValue != 0;
+		roundIsOver = treasureValue != 0;
 	}
 	if (_printingMethode == whenTresuareFound)
 	{
 		_mazeBoard.printMaze();
 	}
-	gameOver(playerTurn, treasureValue);
+	roundOver(playerTurn, treasureValue);
 }
 
 
@@ -255,7 +260,7 @@ void SessionManager::startNewGame()
 
 	_mazeBoard.initNewBoard();
 
-	cout << "\n --> Game is started <-- \n";
+	cout << "\n --> ROUND "<< _roundsCounter   <<"-- \n";
 	_mazeBoard.printMaze();
 
 	gameManager();

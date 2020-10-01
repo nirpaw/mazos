@@ -42,7 +42,7 @@ public:
 
 	void printGameSummary(int winner);
 
-	void gameOver(int winner, int tresureValue);
+	void roundOver(int winner, int tresureValue);
 
 	void gameManager();
 

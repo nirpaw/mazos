@@ -55,6 +55,7 @@ void MazeBoard::_crawler(int i, int j)
 			_crawler(i + 1, j);
 	}
 }
+
 void MazeBoard::setMazeRooms()
 {
 	int externalRoomsCounter = 0;

@@ -7,7 +7,6 @@
 
 Room::Room()
 {
-	cout << ":Room() ct`r";
 }
 
 Room::Room(int i, int j, ePartition top, ePartition bottom, ePartition right, ePartition left, eRoomType roomType)
@@ -31,7 +30,6 @@ Room::~Room()
 
 void Room::printRoom()
 {
-
 	for (int i = 0; i < LENGTH_DRAW_C; i++)
 	{
 		if (_top == wall)
@@ -42,7 +40,7 @@ void Room::printRoom()
 	cout << "\n";
 	for (int i = 0; i < LENGTH_DRAW_R; i++)
 	{
-		for (int j = 0; j < LENGTH_DRAW_C; j++)
+		for (int j = 0; j < LENGTH_DRAW_C ; j++)
 		{
 			if (j == 0)
 			{
