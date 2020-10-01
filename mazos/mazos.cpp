@@ -5,10 +5,9 @@
 #include "SessionManager.h"
 
 int main()
-{
+{																														   
 	SessionManager s;
-	s.userInputGameSettings();
-	s.startNewGame();
+	s.initSession();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

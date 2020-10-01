@@ -3,10 +3,14 @@
 #include <algorithm> // for std::find
 #include <iterator> // for std::begin, std::end
 #include <iostream>
+#include <time.h>
+#include <map>
 
 
 SessionManager::SessionManager()
 {
+	srand(time(NULL));
+
 
 }
 
@@ -18,7 +22,8 @@ SessionManager::~SessionManager()
 
 void SessionManager::initSession()
 {
-
+	userInputGameSettings();
+	startNewGame();
 }
 
 void SessionManager::addStep(int playerNun)
@@ -61,11 +66,14 @@ void SessionManager::gameOver(int winner, int tresureValue)
 
 void SessionManager::gameManager()
 {
+
 	int playerTurn = rand() % 2;
 	bool gameIsOver = false;
 	int treasureValue = 0;
 	while (!gameIsOver)
 	{
+		system("pause");
+
 		playerTurn = (playerTurn + 1) % 2;
 
 		playTurn(playerTurn);
@@ -74,10 +82,10 @@ void SessionManager::gameManager()
 		{
 			_mazeBoard.printMaze();
 		}
-		cout << "----\nfor debug\n" ;
+		//cout << "----\nfor debug\n" ;
 
-		cout << "p1 steps :" << _playerOneStepsCounter;
-		cout << "\np2 steps :" << _playerTwoStepsCounter;		cout << "\n----";
+		//cout << "p1 steps :" << _playerOneStepsCounter;
+		//cout << "\np2 steps :" << _playerTwoStepsCounter;		cout << "\n----";
 
 		try {
 			treasureValue = _mazeBoard.getTresureValue(playerTurn);
@@ -89,40 +97,45 @@ void SessionManager::gameManager()
 
 		gameIsOver = treasureValue != 0;
 	}
+	if (_printingMethode == whenTresuareFound)
+	{
+		_mazeBoard.printMaze();
+	}
 	gameOver(playerTurn, treasureValue);
 }
+
+
 void SessionManager::playTurn(int playerTurn)
 {
-	cout << "\n\n-->Now it`s ";
-	if (playerTurn == 0)
-		cout << _mazeBoard.getPlayerOne().getName();
-	else
-		cout << _mazeBoard.getPlayerTwo().getName();
-	cout << "`s turn.\n";
 	char moveChoice;
 
-	bool choiseIsOK = false;
+	bool choiseIsOK = true;
 	bool moveIsOk = false;
 
 	while (!choiseIsOK || !moveIsOk)
 	{
-		cout << "\n-->Choose direction to move:: ";
+		choiseIsOK = true;
+		cout << "\n\n-->Now it`s ";
+		string playerName;
+		if (playerTurn == 0)
+			playerName= _mazeBoard.getPlayerOne().getName();
+		else
+			playerName= _mazeBoard.getPlayerTwo().getName();
 
-		cout << "\n\tA- Left\n\tD- Right\n\tW- Up\n\tS- Down\n\tX- Do not move\n";
-		cout << "-->Hints:\n\tN- Air distance from the Treasury\n\tM- Show adjoining room\n\tChoice:";
-		cin >> moveChoice;
+		cout << playerName<< "`s turn.\n";
 
-		char options[] = { 'A', 'D' , 'W', 'S', 'X' , 'N', 'M'};
-		bool exists = find(begin(options), end(options), toupper(moveChoice)) != end(options);
-
-		if (exists)
-			choiseIsOK = true;
+		if (_gameType == userVsRobot && playerTurn == 0)
+		{
+			cout << "\n-->Choose direction to move:: ";
+			cout << "\n\tA- Left\n\tD- Right\n\tW- Up\n\tS- Down\n\tX- Do not move\n";
+			cout << "-->Hints:\n\tN- Air distance from the Treasury\n\tM- Show adjoining room\n\tChoice:";
+			cin >> moveChoice;
+		}
 		else
 		{
-			cout << "~| Wrong input. Try again|~\n";
-			continue;
+			char options[] = { 'A', 'D', 'S', 'W' , 'X'};
+			moveChoice = options[rand() % sizeof(options) / sizeof(char)];
 		}
-
 		bool isStep = true;
 		try
 		{
@@ -152,9 +165,18 @@ void SessionManager::playTurn(int playerTurn)
 				system("pause");
 				break;
 			default:
+				if (_gameType == userVsRobot && playerTurn == 0)
+				{
+					cout << "\n~| Wrong input. Try again|~\n";
+				}
+				choiseIsOK = false;
+				continue;
 				break;
 			}
+		
 
+			cout << "\n-> " << playerName << " " << optionsMap(toupper(moveChoice));
+			cout << "\n";
 			moveIsOk = true;
 			if(isStep)
 				addStep(playerTurn);
@@ -166,40 +188,61 @@ void SessionManager::playTurn(int playerTurn)
 				addStep(playerTurn);
 		}
 		catch (CrossingBlockedException& e) {
-			cout << "\n~| YOU SHALL NOT PASS |~\nYou tried to pass through a wall. Try Again.\n";
+			cout << playerName << " tried to pass through a wall. Try Again.\n";
 			system("pause");
 
 			continue;
 		}
 		
 	}
+
 }
 void SessionManager::printAjoiningRoom(int playerTurn)
 {
+	int i = playerTurn == 0 ? _mazeBoard.getPlayerOne().getI() : _mazeBoard.getPlayerTwo().getI();
+	int j = playerTurn == 0 ? _mazeBoard.getPlayerOne().getJ() : _mazeBoard.getPlayerTwo().getJ();
 
-	bool choiseIsOK = false;
+	bool choiseIsOK = true;
 	char roomChoice;
 
 	while (!choiseIsOK)
 	{
+		choiseIsOK = true;
 		cout << "\n-->Which room would you like to see?\n\tA- Left\n\tD- Right\n\tW- Up\n\tS- Down\n";
 		cout << "\n\tChoice:";
 		cin >> roomChoice;
-
-		char options[] = { 'A', 'D' , 'W', 'S' };
-		bool exists = find(begin(options), end(options), toupper(roomChoice)) != end(options);
-
-		if (exists)
-			choiseIsOK = true;
-		else
+		try
 		{
-			cout << "~| Wrong input. Try again|~\n";
-			continue;
+			switch (toupper(roomChoice))
+			{
+			case 'A':
+				_mazeBoard.printSingleRoom(i, j - 1);
+				break;
+
+			case 'W':
+				_mazeBoard.printSingleRoom(i - 1, j);
+				break;
+
+			case 'D':
+				_mazeBoard.printSingleRoom(i, j + 1);
+				break;
+
+			case 'S':
+				_mazeBoard.printSingleRoom(i + 1, j);
+				break;
+
+			default:
+				cout << "~| Wrong input. Try again |~\n";
+				choiseIsOK = false;
+				continue;
+				break;
+			}
+		}
+		catch (OutOfBoundsException& e) 
+		{
+			cout << "-->There is no such room\n";
 		}
 	}
-
-	//TODO:FINISH
-	cout << "THIS FEATURE IS WILL BE HERE TOMMOROW\n";
 }
 
 void SessionManager::printAirDist(int playerTurn)
@@ -218,6 +261,8 @@ void SessionManager::startNewGame()
 	_playerTwoStepsPicks = 0;
 
 	_mazeBoard.initNewBoard();
+
+	cout << "\n --> Game is started <-- \n";
 	_mazeBoard.printMaze();
 
 	gameManager();
@@ -225,34 +270,98 @@ void SessionManager::startNewGame()
 
 void SessionManager::userInputGameSettings()
 {
-	string n1, n2;
-	cout << "-->Enter Player One name: ";
-	cin >> n1;
-	cout << "-->Enter Player Two name: ";
-	cin >> n2;
-	_mazeBoard.setPlayersName(n1, n2);
+
 	char printChoose;
-	cout << "-->Choose:\n\tA - Print maze every turn\n\tB - Print maze only at the end\n\tChoice: ";
-	cin >> printChoose;
 
 	bool choiseIsOk = false;
 	while (!choiseIsOk)
 	{
-		if (toupper(printChoose) == 'A')
+		cout << "-->Choose:\n\tA - Print maze every turn\n\tB - Print maze only at the end\n\tChoice: ";
+		cin >> printChoose;
+
+		switch (toupper(printChoose))
 		{
+		case 'A':
 			_printingMethode = everyTurn;
 			choiseIsOk = true;
-		}
-		else if (toupper(printChoose) == 'B') {
+			break;		
+		case 'B':
 			_printingMethode = whenTresuareFound;
 			choiseIsOk = true;
-
-		}
-		else {
+			break;
+		default:
 			cout << "~| Wrong input. Try again|~\n";
+			continue;
+			break;
 		}
 	}
 
+	char gameTypeChoose;
 
+	choiseIsOk = false;
+	while (!choiseIsOk)
+	{
+		cout << "-->Choose:\n\tA - Robot VS Robot\n\tB - User VS Robot\n\tChoice: ";
+		cin >> gameTypeChoose;
+
+		switch (toupper(gameTypeChoose))
+		{
+		case 'A':
+			_gameType = robotVsRobot;
+			choiseIsOk = true;
+			break;		
+		case 'B':
+			_gameType = userVsRobot;
+			choiseIsOk = true;
+			break;
+		default:
+			cout << "~| Wrong input. Try again|~\n";
+			continue;
+			break;
+		}
+	}
+
+	string n1, n2;
+	if (_gameType == userVsRobot)
+	{
+		cout << "-->Enter Player name: ";
+		cin >> n1;
+		n2 = "Robot";
+	}
+	else if (_gameType == robotVsRobot)
+	{
+		n1 = "Wall-E";
+		n2 = "Terminator";
+	}
+	
+
+	_mazeBoard.setPlayersName(n1, n2);
+
+
+
+}
+
+string SessionManager::optionsMap(char c)
+{
+	switch (c)
+	{
+	case 'A':
+		return "Choose to go Left";
+		break;
+	case 'D':
+		return "Choose to go Right";
+		break;
+	case 'S':
+		return "Choose to go Down";
+		break;
+	case 'W':
+		return "Choose to go Up";
+		break;
+	case 'X':
+		return "Choose to Stay";
+		break;
+	default:
+		break;
+	}
 
 }

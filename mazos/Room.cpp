@@ -28,42 +28,57 @@ Room::~Room()
 }
 
 
-void::Room::printRoom()
+void Room::printRoom()
 {
+
 	for (int i = 0; i < LENGTH_DRAW_C; i++)
 	{
 		if (_top == wall)
-			cout << WALL_SIGN_VERTICAL;
+			cout << WALL_SIGN_HORIZONTAL;
 		else
-			cout << DOOR_SIGN_VERTICAL;
+			cout << DOOR_SIGN_HORIZONTAL;
 	}
+	cout << "\n";
 	for (int i = 0; i < LENGTH_DRAW_R; i++)
 	{
-		for (int j = 0; j < LENGTH_DRAW_C; i++)
+		for (int j = 0; j < LENGTH_DRAW_C; j++)
 		{
 			if (j == 0)
 			{
 				if (_left == wall)
-					cout << WALL_SIGN_HORIZONTAL;
+					cout << WALL_SIGN_VERTICAL;
 				else
-					cout << DOOR_SIGN_HORIZONTAL;
+					cout << DOOR_SIGN_VERTICAL;
 			}
-			if (j == LENGTH_DRAW_C - 1)
+			else if (j == LENGTH_DRAW_C - 1)
 			{
 				if (_right == wall)
-					cout << WALL_SIGN_HORIZONTAL;
+					cout << WALL_SIGN_VERTICAL;
 				else
-					cout << DOOR_SIGN_HORIZONTAL;
+					cout << DOOR_SIGN_VERTICAL;
+			}
+			else if (i== LENGTH_DRAW_C / 2 && j== LENGTH_DRAW_R / 2)
+			{
+				if (_tresureValue != 0)
+					cout << _tresureValue;
+				else
+					cout << SPACE_CHAR;
+			}
+			else {
+				cout << SPACE_CHAR;;
 			}
 		}
+		cout << "\n";
+
 	}
+
 
 	for (int i = 0; i < LENGTH_DRAW_C; i++)
 	{
 		if (_bottom == wall)
-			cout << WALL_SIGN_VERTICAL;
+			cout << WALL_SIGN_HORIZONTAL;
 		else
-			cout << DOOR_SIGN_VERTICAL;
+			cout << DOOR_SIGN_HORIZONTAL;
 	}
 	cout << "\n";
 }

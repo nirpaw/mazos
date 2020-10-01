@@ -2,7 +2,6 @@
 #include "Player.h"
 
 Player::Player() : _score(0), _i(0) , _j(0) {
-	this->setName("Player");
 }
 
 

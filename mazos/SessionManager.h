@@ -7,6 +7,14 @@ enum ePrintingMethod
 	whenTresuareFound
 };
 
+enum eGameType
+{
+	robotVsRobot,
+	userVsRobot
+};
+
+
+
 class SessionManager
 {
 
@@ -20,6 +28,7 @@ class SessionManager
 
 	MazeBoard _mazeBoard;
 	ePrintingMethod _printingMethode;
+	eGameType _gameType;
 
 public:
 	SessionManager();
@@ -34,6 +43,8 @@ public:
 	void gameOver(int winner, int tresureValue);
 
 	void gameManager();
+
+	string optionsMap(char c);
 
 	void playTurn(int playerTurn);
 

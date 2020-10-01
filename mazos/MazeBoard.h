@@ -1,6 +1,6 @@
 #include "Room.h"
 #include "Player.h"
-#define ROW 4	
+#define ROW 4
 #define COL 4
 #define LENGTH_DRAW_C 10
 #define LENGTH_DRAW_R 6
@@ -9,6 +9,7 @@
 #define WALL_SIGN_VERTICAL '#'
 #define DOOR_SIGN_VERTICAL '|'
 #define SPACE_CHAR ' '
+#define BLOCKED_MSG "The crossing is blocked, an impossible step"
 #pragma once
 
 enum eMoveDirection
@@ -61,8 +62,10 @@ public:
 	void serPlayersLocation();
 	float checkAirDistance(int playerNum);
 	void initTreasure();
+	void printSingleRoom(int i, int j);
 	void printMaze();
 	void setPlayersName(string n1, string n2);
+	bool isOutOfBounds(int i, int j);
 	int getTresureValue(int playerNum);
 	void movePlayer(int playerNum, eMoveDirection direction);
 

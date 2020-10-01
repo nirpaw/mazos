@@ -24,7 +24,6 @@ void MazeBoard::initNewBoard()
 }
 
 
-
 void MazeBoard::checkIfTresureIsReachble()
 {
 	_crawler(_playerOne.getI(), _playerOne.getJ());
@@ -130,6 +129,14 @@ void MazeBoard::initTreasure()
 	_maze[_trI][_trJ].setTresureValue(rand() % 10);
 }
 
+void MazeBoard::printSingleRoom(int i, int j)
+{
+	if (isOutOfBounds(i, j))
+	{
+		throw OutOfBoundsException("Out of bounds");
+	}
+	_maze[i][j].printRoom();
+}
 void MazeBoard::printMaze()
 {
 	// DRAW_R is the numeber of chars that representing tops & bottoms parititions
@@ -221,6 +228,7 @@ void MazeBoard::printMaze()
 
 }
 
+
 void MazeBoard::setPlayersName(string n1, string n2)
 {
 	_playerOne.setName(n1);
@@ -228,12 +236,17 @@ void MazeBoard::setPlayersName(string n1, string n2)
 
 }
 
+bool MazeBoard::isOutOfBounds(int i, int j)
+{
+	return (i < 0 || i >= ROW ||
+		j < 0 || j >= COL);
+}
+
 int MazeBoard::getTresureValue(int playerNum)
 {
 	Player temp = playerNum == 0 ? _playerOne : _playerTwo;
 
-	if (temp.getI() < 0 || temp.getI() >= ROW ||
-		temp.getJ() < 0 || temp.getJ() >= ROW)
+	if (isOutOfBounds(temp.getI(), temp.getJ()))
 	{
 		throw OutOfBoundsException("Out of bounds");
 	}
@@ -246,8 +259,7 @@ void MazeBoard::movePlayer(int playerNum, eMoveDirection direction)
 
 	Player temp = playerNum == 0 ? _playerOne : _playerTwo;
 
-	if (temp.getI() < 0 || temp.getI() >= ROW ||
-		temp.getJ() < 0 || temp.getJ() >= ROW)
+	if (isOutOfBounds(temp.getI(), temp.getJ()))
 	{
 		throw OutOfBoundsException("Out of bounds");
 	}
@@ -256,23 +268,23 @@ void MazeBoard::movePlayer(int playerNum, eMoveDirection direction)
 	{
 	case moveLeft:
 		if ((_maze[temp.getI()][temp.getJ()]).getLeft() == wall)
-			throw CrossingBlockedException("The crossing is blocked, an impossible step");
+			throw CrossingBlockedException(BLOCKED_MSG);
 		temp.setPlayerLocation(temp.getI(), temp.getJ() - 1);
 		break;
 	case moveRight:
 		if ((_maze[temp.getI()][temp.getJ()]).getRight() == wall)
-			throw CrossingBlockedException("The crossing is blocked, an impossible step");
+			throw CrossingBlockedException(BLOCKED_MSG);
 		temp.setPlayerLocation(temp.getI(), temp.getJ() + 1);
 		break;
 	case moveUp:
 		if ((_maze[temp.getI()][temp.getJ()]).getTop() == wall)
-			throw CrossingBlockedException("The crossing is blocked, an impossible step");
+			throw CrossingBlockedException(BLOCKED_MSG);
 		temp.setPlayerLocation(temp.getI() - 1, temp.getJ());
 
 		break;
 	case moveDown:
 		if ((_maze[temp.getI()][temp.getJ()]).getBottom() == wall)
-			throw CrossingBlockedException("The crossing is blocked, an impossible step");
+			throw CrossingBlockedException(BLOCKED_MSG);
 		temp.setPlayerLocation(temp.getI() + 1, temp.getJ());
 		break;
 	default:
